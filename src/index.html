@@ -1,14 +1,54 @@
 <!DOCTYPE html>
 <html>
     <head>
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <meta charset="utf-8">
-       <title>TODO</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <title>TODO</title>
     </head>
     <body>
         <div id="general-container">
-            
+            <div class="header">
+                <div class="logo">
+                    <img src="<%=require('../src/pictures/list-box-outline.svg')%>" 
+                    height="40px"
+                    alt="TODO list logo.">
+                </div>
+                <div class="header-text">
+                    TODO LIST 
+                </div>
+                <div class="logo">
+                    <img src="<%=require('../src/pictures/list-box-outline.svg')%>" 
+                    height="40px"
+                    alt="TODO list logo.">
+                </div>
+            </div>  
+            <div class="sidebar">
+                <div>
+                    Sidebar
+                </div>
+                <div class="projects">
+                    <div class="project-item">
+                        <div>Project 1</div>
+                        <div>Project 2</div>
+                        <div>Project 3</div>
+                        <div>Project 4</div>
+                    </div>
+                </div>
+                <div class="add">
+                    <button class="add" type="button">
+                        <img src="<%=require('../src/pictures/plus.svg')%>"
+                        height="40px"
+                        alt="add new item"></button>                   
+                </div>
+            </div>
+            <div class="main-content">
+                <div class="todo-list">
+                    <div class="todo-items">
+                        <div><span class="descriptor">Title:</span><span class="field">Item1</span></div>
+                        <div><span class="descriptor">Due date:</span><span class="field">Due Date</span></div>
+                    </div> 
+                </div>
+            </div>
         </div>
     </body>
 </html>
-

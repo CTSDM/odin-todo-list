@@ -1,3 +1,54 @@
-body {
-    background-color: grey;
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding:0;
+}
+
+#general-container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: minmax(100px, 1fr) 4fr;
+}
+
+.header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 2rem;
+    grid-area: 1 / 1 / 2 / -1;
+}
+
+.logo {
+    display: flex;
+}
+
+.sidebar,
+.projects,
+.main-content,
+.project-item,
+.todo-list,
+.todo-items {
+    display: grid;
+    gap: 10px;
+}
+
+.sidebar {
+    grid-area: 2 / 1 / -1 / 2;
+}
+
+.main-content {
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+.add button {
+    border-radius: 20%;
+    margin: 0;
+    padding: 0;
+}
+
+.add:hover button {
+    background-color: skyblue;
 }
