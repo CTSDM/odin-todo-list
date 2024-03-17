@@ -24,6 +24,6 @@ export default class Project {
     get items() {return this.#items;}
 
     addItem(item) {this.#items.push(item);}
-    removeItem(index) {this.#items.splice(index, 0, 1);
+    removeItem(index) {this.#items.splice(index, 1);
     }
 }
