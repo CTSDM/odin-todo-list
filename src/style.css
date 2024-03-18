@@ -52,3 +52,57 @@ html, body {
 .add:hover button {
     background-color: skyblue;
 }
+
+dialog {
+    border: 0;
+    padding: 0;
+    border-radius: 5%;
+    background-color: beige;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(5px);
+}
+
+.modal {
+    padding: 15px 40px;
+    border-radius: 5%;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+.add-description {
+    display: grid;
+}
+.bottom-container-todo {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.urgency,
+.importance {
+    display: flex;
+    align-items: center;
+}
+
+.selection-dialog {
+    display: flex;
+    gap: 20px;
+    font-size: 1.5rem;
+    justify-content: center;
+}
+
+.selection-dialog > div {
+    border: solid 2px grey;
+    border-radius: 10%;
+    padding: 5px;
+}
+
+.selection-dialog div:hover {
+    background-color: skyblue;
+    transition: all 0.5s ease;
+}

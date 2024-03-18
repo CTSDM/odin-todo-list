@@ -1,16 +1,17 @@
 import './style.css';
-import Item from './items.js'
-import Project from './project.js'
+import Item from './items.js';
+import Project from './project.js';
+import DomManipulation from './domManipulation.js';
+import {compareAsc, format} from "date-fns";
 
-const item1 = new Item("ejercicio", "horas horas horas", "due date", false, true);
-const item2 = new Item("practicas", "mucho que hacer", "due date", false, true);
-const generalProject = new Project("General", true, "21-03-2025");
+let dd = format (new Date(2014, 1, 11), "yyyy-MM-dd");
+console.log(dd);
 
-generalProject.addItem(item1);
-generalProject.addItem(item2);
+const dates = [
+  new Date(1995, 6, 2),
+  new Date(1987, 1, 11),
+  new Date(1989, 6, 10),
+];
+dates.sort(compareAsc);
+console.log(dates);
 
-console.log(generalProject.items);
-generalProject.removeItem(1);
-console.log(generalProject.items);
-generalProject.removeItem(0);
-console.log(generalProject.items);
