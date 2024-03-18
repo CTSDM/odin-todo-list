@@ -1,6 +1,7 @@
 // In this module we program all the logic related to the dialog
 
 const dialog = document.querySelector("dialog");
+
 const TODO_TEXT = "TODO";
 const PROJECT_TEXT= "Project";
 
@@ -160,6 +161,8 @@ function getDivProject() {
 
     // Adding buttons
     form.appendChild(getCloseSubmitButtons());
+
+    return form.parentNode;
 }
 
 
