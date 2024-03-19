@@ -1,17 +1,27 @@
 import './style.css';
-import Item from './items.js';
 import Project from './project.js';
-import DomManipulation from './domManipulation.js';
+import changeDOM from './domManipulation.js';
 import {compareAsc, format} from "date-fns";
 
-let dd = format (new Date(2014, 1, 11), "yyyy-MM-dd");
-console.log(dd);
+// IIFE 
+(function (){
+    // we create a default project
+    // the default project cannot be deleted
+    const projects = [];
+    projects.push(getDefaultProject());
+   
+    // we needt to pass this project array to the dommanipulation
+    // and the dommanipulation somewhere else
+    changeDOM(projects);
 
-const dates = [
-  new Date(1995, 6, 2),
-  new Date(1987, 1, 11),
-  new Date(1989, 6, 10),
-];
-dates.sort(compareAsc);
-console.log(dates);
 
+
+
+    function getDefaultProject() {
+        const title = "Default";
+        const description = "Default project where todo items not belonging to any particular project can be added and stored.";
+        const importance = false;
+
+        return new Project(title, description, importance);
+    }
+})()

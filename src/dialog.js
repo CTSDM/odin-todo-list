@@ -2,7 +2,6 @@
 
 import Item from './items.js';
 import Project from './project.js';
-import {projects} from './project.js';
 
 export {dialog, getDivTodoItem, getDivProject};
 
@@ -17,8 +16,6 @@ dialog.addEventListener("click", (e) => {
         dialog.close();
     }
 })
-
-dialog.appendChild(getDivTodoItem());
 
 function getDataItemsForm(form) {
     const dataItem = [];
@@ -45,20 +42,20 @@ function closeModal() {
     dialog.close();
 }
 
-function addItemToProject(form, itemToAdd) {
+function addItemToProject(form, itemToAdd, projects) {
     const index = form.querySelector("select").value;
     projects[index].items.push(itemToAdd);
 }
 
-function submitItem(form) {
+function submitItem(form, projects) {
     const dataItem = getDataItemsForm(form)
     const newItem = new Item(dataItem[0], dataItem[1], dataItem[2], dataItem[3], dataItem[4]);
     // add item to its corresponding project;
-    addItemToProject(form, newItem);
+    addItemToProject(form, newItem, projects);
     form.reset();
 }
 
-function submitProject(form) {
+function submitProject(form, projects) {
     const dataProject = getDataProjectForm(form);
     projects.push(new Project(dataProject[0], dataProject[1], dataProject[2]));
     form.reset();
@@ -73,23 +70,23 @@ function getCloseButton() {
     return btn;
 }
 
-function getSubmitButton(form, selector) {
+function getSubmitButton(form, selector, projects) {
     const btn = document.createElement("button");
     btn.classList.add("submit");
     btn.type = "submit";
     btn.textContent = "Confirm";
 
     form.addEventListener("submit", () => {
-        selector ? submitItem(form) : submitProject(form);
+        selector ? submitItem(form, projects) : submitProject(form, projects);
     })
     return btn;
 }
 
-function getCloseSubmitButtons(form, selector) {
+function getCloseSubmitButtons(form, selector, projects) {
     const divButtons = document.createElement("div");
     divButtons.classList.add("buttons");
     divButtons.appendChild(getCloseButton());
-    divButtons.appendChild(getSubmitButton(form, selector));
+    divButtons.appendChild(getSubmitButton(form, selector, projects));
 
     return divButtons;
 }
@@ -180,7 +177,7 @@ function getForm(text) {
     return form;
 }
 
-function getDivDropdownProjects() {
+function getDivDropdownProjects(projects) {
     const divDropdown = document.createElement("div");
     const labelDropdown = document.createElement("label");
     labelDropdown.htmlFor = "project-list";
@@ -202,13 +199,13 @@ function getDivDropdownProjects() {
     return divDropdown;
 }
 
-function getDivTodoItem() {
+function getDivTodoItem(projects) {
     const selector = true;
     const form = getForm(TODO_TEXT);
 
     // Adding a dropdown selector to select a project
     // by default it will use the default project, position 0 of the array project
-    form.append(getDivDropdownProjects());
+    form.append(getDivDropdownProjects(projects));
 
     // Adding title and description
     form.appendChild(getDivTitle());
@@ -226,13 +223,13 @@ function getDivTodoItem() {
     form.appendChild(divBottomContainer);
 
     // Adding buttons
-    form.appendChild(getCloseSubmitButtons(form, selector));
+    form.appendChild(getCloseSubmitButtons(form, selector, projects));
 
     // We return the parent div of the form element
     return form.parentNode;
 }
 
-function getDivProject() {
+function getDivProject(projects) {
     const selector = false;
     const form = getForm(PROJECT_TEXT);
     
@@ -242,7 +239,7 @@ function getDivProject() {
     form.appendChild(getDivCheckbox("importance", "importance", "Important?"));
 
     // Adding buttons
-    form.appendChild(getCloseSubmitButtons(form, selector));
+    form.appendChild(getCloseSubmitButtons(form, selector, projects));
 
     return form.parentNode;
 }

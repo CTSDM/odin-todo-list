@@ -1,32 +1,37 @@
-import {projects} from "./project.js"; 
 import {dialog, getDivProject, getDivTodoItem} from './dialog.js'
 
-const funcSelectionItemList = [addDivTodo, addDivProject];
-const btnAdd = document.querySelector(".add button");
-const typeItemSelection = document.querySelectorAll(".selection-dialog div");
+export default function changeDOM(projects) {
 
-typeItemSelection.forEach((e, index) => {
-    e.addEventListener("click", funcSelectionItemList[index]);
-})
+    const funcSelectionItemList = [addDivTodo, addDivProject];
+    const btnAdd = document.querySelector(".add button");
+    const typeItemSelection = document.querySelectorAll(".selection-dialog div");
 
-function addDivProject() {
-    cleanChildDialog();
-    dialog.appendChild(getDivProject());
-    console.log(projects);
-}
+    dialog.appendChild(getDivTodoItem(projects));
 
-function addDivTodo() {
-    cleanChildDialog();
-    dialog.appendChild(getDivTodoItem());
-}
+    typeItemSelection.forEach((e, index) => {
+        e.addEventListener("click", funcSelectionItemList[index]);
+    })
 
-function cleanChildDialog() {
-    const modal = dialog.querySelector(".modal");
-    dialog.removeChild(modal);
-}
 
-btnAdd.addEventListener("click", () =>  {
-    dialog.showModal();
-    cleanChildDialog();
-    dialog.appendChild(getDivTodoItem());
-});
+    function addDivProject() {
+        cleanChildDialog();
+        dialog.appendChild(getDivProject(projects));
+        console.log(projects);
+    }
+
+    function addDivTodo() {
+        cleanChildDialog();
+        dialog.appendChild(getDivTodoItem(projects));
+    }
+
+    function cleanChildDialog() {
+        const modal = dialog.querySelector(".modal");
+        dialog.removeChild(modal);
+    }
+
+    btnAdd.addEventListener("click", () =>  {
+        dialog.showModal();
+        cleanChildDialog();
+        dialog.appendChild(getDivTodoItem(projects));
+    })
+};
