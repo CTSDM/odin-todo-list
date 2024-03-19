@@ -2,6 +2,7 @@
 
 import Item from './items.js';
 import Project from './project.js';
+import {populateDivItem} from './domManipulation.js';
 
 export {dialog, getDivTodoItem, getDivProject};
 
@@ -44,7 +45,9 @@ function closeModal() {
 
 function addItemToProject(form, itemToAdd, projects) {
     const index = form.querySelector("select").value;
+    console.log(index);
     projects[index].items.push(itemToAdd);
+    populateDivItem(projects, index, itemToAdd);
 }
 
 function submitItem(form, projects) {
