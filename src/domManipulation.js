@@ -1,4 +1,3 @@
-import {items} from "./items.js";
 import {projects} from "./project.js"; 
 import {dialog, getDivProject, getDivTodoItem} from './dialog.js'
 
@@ -19,7 +18,6 @@ function addDivProject() {
 function addDivTodo() {
     cleanChildDialog();
     dialog.appendChild(getDivTodoItem());
-    console.log(items);
 }
 
 function cleanChildDialog() {

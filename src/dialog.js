@@ -1,7 +1,6 @@
 // In this module we program all the logic related to the dialog
 
 import Item from './items.js';
-import {items} from './items.js';
 import Project from './project.js';
 import {projects} from './project.js';
 
@@ -52,10 +51,10 @@ function addItemToProject(form, itemToAdd) {
 }
 
 function submitItem(form) {
-    const dataItem = getDataItemsForm(form);
-    items.push(new Item(dataItem[0], dataItem[1], dataItem[2], dataItem[3], dataItem[4]));
+    const dataItem = getDataItemsForm(form)
+    const newItem = new Item(dataItem[0], dataItem[1], dataItem[2], dataItem[3], dataItem[4]);
     // add item to its corresponding project;
-    addItemToProject(form, items[items.length - 1]);
+    addItemToProject(form, newItem);
     form.reset();
 }
 
