@@ -6,12 +6,13 @@ export default function changeDOM(projects) {
     const btnAdd = document.querySelector(".add button");
     const typeItemSelection = document.querySelectorAll(".selection-dialog div");
 
+    // By default we load into the modal the todo item option to add
     dialog.appendChild(getDivTodoItem(projects));
+    // By default we load the items in the default project
 
     typeItemSelection.forEach((e, index) => {
         e.addEventListener("click", funcSelectionItemList[index]);
     })
-
 
     function addDivProject() {
         cleanChildDialog();
