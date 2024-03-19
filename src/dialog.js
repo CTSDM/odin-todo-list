@@ -36,7 +36,7 @@ function getDataProjectForm(form) {
     const dataProject = [];
     dataProject.push(form.querySelector("#title").value);
     dataProject.push(form.querySelector("#description").value);
-    dataProject.push(form.querySelector("#urgency").checked);
+    dataProject.push(form.querySelector("#importance").checked);
 
     return dataProject;
 }
@@ -46,9 +46,16 @@ function closeModal() {
     dialog.close();
 }
 
+function addItemToProject(form, itemToAdd) {
+    const index = form.querySelector("select").value;
+    projects[index].items.push(itemToAdd);
+}
+
 function submitItem(form) {
     const dataItem = getDataItemsForm(form);
     items.push(new Item(dataItem[0], dataItem[1], dataItem[2], dataItem[3], dataItem[4]));
+    // add item to its corresponding project;
+    addItemToProject(form, items[items.length - 1]);
     form.reset();
 }
 
@@ -174,9 +181,35 @@ function getForm(text) {
     return form;
 }
 
+function getDivDropdownProjects() {
+    const divDropdown = document.createElement("div");
+    const labelDropdown = document.createElement("label");
+    labelDropdown.htmlFor = "project-list";
+    labelDropdown.textContent = "Choose a project:"
+    divDropdown.classList.add("project-list");
+    const selectDropdown = document.createElement("select");
+    selectDropdown.name = "project-list";
+    selectDropdown.id = "project-list";
+    
+    projects.forEach((project, index) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = index;
+        optionElement.textContent = project.title;
+        selectDropdown.appendChild(optionElement);
+    })
+
+    divDropdown.appendChild(selectDropdown);
+
+    return divDropdown;
+}
+
 function getDivTodoItem() {
     const selector = true;
     const form = getForm(TODO_TEXT);
+
+    // Adding a dropdown selector to select a project
+    // by default it will use the default project, position 0 of the array project
+    form.append(getDivDropdownProjects());
 
     // Adding title and description
     form.appendChild(getDivTitle());
@@ -207,7 +240,7 @@ function getDivProject() {
     // Adding title and description and importance
     form.appendChild(getDivTitle());
     form.appendChild(getDivDescription());
-    form.appendChild(getDivCheckbox("urgency", "urgency", "Urgent?"));
+    form.appendChild(getDivCheckbox("importance", "importance", "Important?"));
 
     // Adding buttons
     form.appendChild(getCloseSubmitButtons(form, selector));

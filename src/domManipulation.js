@@ -1,4 +1,5 @@
-import Item from "./items";
+import {items} from "./items.js";
+import {projects} from "./project.js"; 
 import {dialog, getDivProject, getDivTodoItem} from './dialog.js'
 
 const funcSelectionItemList = [addDivTodo, addDivProject];
@@ -12,18 +13,22 @@ typeItemSelection.forEach((e, index) => {
 function addDivProject() {
     cleanChildDialog();
     dialog.appendChild(getDivProject());
+    console.log(projects);
 }
 
 function addDivTodo() {
     cleanChildDialog();
     dialog.appendChild(getDivTodoItem());
+    console.log(items);
 }
 
 function cleanChildDialog() {
     const modal = dialog.querySelector(".modal");
-    console.log(modal);
-    console.log(dialog);
     dialog.removeChild(modal);
 }
 
-btnAdd.addEventListener("click", () =>  dialog.showModal());
+btnAdd.addEventListener("click", () =>  {
+    dialog.showModal();
+    cleanChildDialog();
+    dialog.appendChild(getDivTodoItem());
+});

@@ -1,25 +1,25 @@
 export default class Project {
     #items;
     #title;
+    #description;
     #importance;
-    #dueDate;
     
-    constructor(title, importance, dueDate)
+    constructor(title, description, importance)
     {
         this.#items = [];
         this.#title = title;
+        this.#description = description;
         this.#importance = importance;
-        this.#dueDate = dueDate;
     }
 
     get title() {return this.#title;}
     set title(newTitle) {this.#title = newTitle;}
 
+    get description() {return this.#description;}
+    set description(newDescription) {this.#description = newDescription;}
+
     get importance() {return this.#importance;}
     set importance(newImportance) {this.#importance = newImportance;}
-
-    get dueDate() {return this.#dueDate;}
-    set dueDate(newDueDate) {this.#dueDate = newDueDate;}
 
     get items() {return this.#items;}
 
