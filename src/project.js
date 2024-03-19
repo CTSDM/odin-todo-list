@@ -27,3 +27,7 @@ export default class Project {
     removeItem(index) {this.#items.splice(index, 1);
     }
 }
+
+const projects = [];
+
+export {projects};

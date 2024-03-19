@@ -28,3 +28,5 @@ export default class Item {
     get importance() {return this.#importance;}
     set importance(newImportance) {this.#importance= newImportance;}
 }
+
+export const items = [];

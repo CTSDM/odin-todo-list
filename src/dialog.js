@@ -1,5 +1,12 @@
 // In this module we program all the logic related to the dialog
 
+import Item from './items.js';
+import {items} from './items.js';
+import Project from './project.js';
+import {projects} from './project.js';
+
+export {dialog, getDivTodoItem, getDivProject};
+
 const dialog = document.querySelector("dialog");
 
 const TODO_TEXT = "TODO";
@@ -14,28 +21,69 @@ dialog.addEventListener("click", (e) => {
 
 dialog.appendChild(getDivTodoItem());
 
+function getDataItemsForm(form) {
+    const dataItem = [];
+    dataItem.push(form.querySelector("#title").value);
+    dataItem.push(form.querySelector("#description").value);
+    dataItem.push(form.querySelector("#due-date").value);
+    dataItem.push(form.querySelector("#urgency").checked);
+    dataItem.push(form.querySelector("#importance").checked);
+
+    return dataItem;
+}
+
+function getDataProjectForm(form) {
+    const dataProject = [];
+    dataProject.push(form.querySelector("#title").value);
+    dataProject.push(form.querySelector("#description").value);
+    dataProject.push(form.querySelector("#urgency").checked);
+
+    return dataProject;
+}
+
+function closeModal() {
+    dialog.querySelector("form").reset();
+    dialog.close();
+}
+
+function submitItem(form) {
+    const dataItem = getDataItemsForm(form);
+    items.push(new Item(dataItem[0], dataItem[1], dataItem[2], dataItem[3], dataItem[4]));
+    form.reset();
+}
+
+function submitProject(form) {
+    const dataProject = getDataProjectForm(form);
+    projects.push(new Project(dataProject[0], dataProject[1], dataProject[2]));
+    form.reset();
+}
+
 function getCloseButton() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.textContent = "Close";
+    btn.addEventListener("click", closeModal);
 
     return btn;
 }
 
-function getSubmitButton() {
+function getSubmitButton(form, selector) {
     const btn = document.createElement("button");
     btn.classList.add("submit");
     btn.type = "submit";
     btn.textContent = "Confirm";
 
+    form.addEventListener("submit", () => {
+        selector ? submitItem(form) : submitProject(form);
+    })
     return btn;
 }
 
-function getCloseSubmitButtons() {
+function getCloseSubmitButtons(form, selector) {
     const divButtons = document.createElement("div");
     divButtons.classList.add("buttons");
     divButtons.appendChild(getCloseButton());
-    divButtons.appendChild(getSubmitButton());
+    divButtons.appendChild(getSubmitButton(form, selector));
 
     return divButtons;
 }
@@ -127,6 +175,7 @@ function getForm(text) {
 }
 
 function getDivTodoItem() {
+    const selector = true;
     const form = getForm(TODO_TEXT);
 
     // Adding title and description
@@ -145,13 +194,14 @@ function getDivTodoItem() {
     form.appendChild(divBottomContainer);
 
     // Adding buttons
-    form.appendChild(getCloseSubmitButtons());
+    form.appendChild(getCloseSubmitButtons(form, selector));
 
     // We return the parent div of the form element
     return form.parentNode;
 }
 
 function getDivProject() {
+    const selector = false;
     const form = getForm(PROJECT_TEXT);
     
     // Adding title and description and importance
@@ -160,11 +210,10 @@ function getDivProject() {
     form.appendChild(getDivCheckbox("urgency", "urgency", "Urgent?"));
 
     // Adding buttons
-    form.appendChild(getCloseSubmitButtons());
+    form.appendChild(getCloseSubmitButtons(form, selector));
 
     return form.parentNode;
 }
 
 
-export {dialog, getDivTodoItem, getDivProject};
 
