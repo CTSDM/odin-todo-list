@@ -1,4 +1,5 @@
 import {dialog, getDivProject, getDivTodoItem} from './dialog.js'
+import { saveProjects } from './storage.js';
 
 export default function changeDOM(projects) {
     firstLoadPage(projects);
@@ -48,15 +49,15 @@ function firstLoadPage(projects) {
     // The first time we load the web, we will load the default project whose index is 
     // INITIAL_ACTIVE_PROJECT
     populateSideBar(projects, INITIAL_ACTIVE_PROJECT);
-    populateProject(projects[DEFAULT_PROJECT_INDEX], DEFAULT_PROJECT_INDEX);
+    populateProject(projects[DEFAULT_PROJECT_INDEX], DEFAULT_PROJECT_INDEX, projects);
 }
 
-function populateProject(project, index) {
+function populateProject(project, index, projects) {
     const todoItemsContainer = document.querySelector(".todo-list");
     todoItemsContainer.dataset.index = index;
 
     project.items.forEach((item, index) => {
-        createListItemsDiv(item, index, project);
+        createListItemsDiv(item, index, project, projects);
     })
 }
 
@@ -64,7 +65,7 @@ function removeDivItem(divContainer) {
     divContainer.parentNode.removeChild(divContainer);
 }
 
-function createListItemsDiv(item, index, project) {
+function createListItemsDiv(item, index, project, projects) {
     const divContainer = document.createElement("div");
     divContainer.classList.add("todo-items");
     divContainer.dataset.index = index;
@@ -80,6 +81,7 @@ function createListItemsDiv(item, index, project) {
     divRemoveItem.addEventListener("click", (e) => {
         removeDivItem(e.target.parentNode);
         project.removeItem(index);
+        saveProjects(projects);
     });
 
     divContainer.appendChild(divTitle);
@@ -92,11 +94,9 @@ function createListItemsDiv(item, index, project) {
 }
 
 export function populateDivItem(projects, index, item) {
-    console.log(index);
     const todoItemsContainer = document.querySelector(".todo-list");
-    console.log(todoItemsContainer.dataset.index);
     if (index === todoItemsContainer.dataset.index) {
-        createListItemsDiv(item, projects[index].length - 1, projects[index]);
+        createListItemsDiv(item, projects[index].length - 1, projects[index], projects);
     }
 }
 

@@ -3,6 +3,7 @@
 import Item from './items.js';
 import Project from './project.js';
 import {populateDivItem, addProject} from './domManipulation.js';
+import {saveProjects} from './storage.js';
 
 export {dialog, getDivTodoItem, getDivProject};
 
@@ -47,6 +48,7 @@ function addItemToProject(form, itemToAdd, projects) {
     const index = form.querySelector("select").value;
     projects[index].items.push(itemToAdd);
     populateDivItem(projects, index, itemToAdd);
+    saveProjects(projects);
 }
 
 function submitItem(form, projects) {
@@ -62,6 +64,7 @@ function submitProject(form, projects) {
     const newProject = new Project(dataProject[0], dataProject[1], dataProject[2]);
     projects.push(newProject);
     addProject(newProject, projects.length);
+    saveProjects(projects);
     form.reset();
 }
 

@@ -24,7 +24,16 @@ export default class Project {
     get items() {return this.#items;}
 
     addItem(item) {this.#items.push(item);}
-    removeItem(index) {this.#items.splice(index, 1);
+    removeItem(index) {this.#items.splice(index, 1);}
+
+    toJSON() {
+        return {
+            items: this.#items.map((item) => item.toJSON()),
+            title: this.#title,
+            description: this.#description,
+            importance: this.#importance
+        }
     }
+
 }
 

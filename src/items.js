@@ -27,4 +27,14 @@ export default class Item {
 
     get importance() {return this.#importance;}
     set importance(newImportance) {this.#importance= newImportance;}
+
+    toJSON() {
+        return {
+            title: this.#title,
+            description: this.#description,
+            dueDate: this.#dueDate,
+            urgency: this.#urgency,
+            importance: this.#importance
+        }
+    }
 }
