@@ -6,6 +6,8 @@ export default function changeDOM(projects) {
 
 const DEFAULT_PROJECT_INDEX = 0;
 const INITIAL_ACTIVE_PROJECT = 1;
+const TITLE_ALL_ITEMS_CONTAINER =  "All TODO items";
+const INDEX_ALL_ITEMS_CONTAINER = 0;
 
 function firstLoadPage(projects) {
     const funcSelectionItemList = [addDivTodo, addDivProject];
@@ -98,13 +100,25 @@ export function populateDivItem(projects, index, item) {
 
 function populateSideBar(projects, indexActive) {
     // the div below will show all the available items within all the projects
-    setUpDiv("All TODO items", 0);
+    setUpAllTODOs(projects, TITLE_ALL_ITEMS_CONTAINER, INDEX_ALL_ITEMS_CONTAINER);
 
     projects.forEach((project, index) => {
         addProject(project, index + 1);
     });
 
     setActiveContainer(indexActive);
+}
+
+function setUpAllTODOs(projects, title, index) {
+    setUpDiv(title, index);
+    // The container of all items will always be the first div
+    const divAllTODO = document.querySelector(".project-item div");
+    divAllTODO.addEventListener("click", () => {
+        clearListItems();
+        projects.forEach((project) => {
+            populateProject(project, "none");
+        })
+    })
 }
 
 function setUpDiv(title, index) {
@@ -126,8 +140,6 @@ export function addProject(project, index) {
         populateProject(project, index);
         const updatedProjContainer = document.querySelectorAll(".project-item div");
         updatedProjContainer.forEach((element) => {
-            console.log();
-            console.log(element);
             element.classList.remove("active");
         });
         updatedProjContainer[index].classList.add("active");
