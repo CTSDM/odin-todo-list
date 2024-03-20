@@ -2,7 +2,7 @@
 
 import Item from './items.js';
 import Project from './project.js';
-import {populateDivItem, addProject} from './domManipulation.js';
+import {populateDivItem, addProject, createListItemsDiv} from './domManipulation.js';
 
 export {dialog, getDivTodoItem, getDivProject};
 
@@ -48,6 +48,7 @@ function addItemToProject(form, itemToAdd, projects) {
     console.log(index);
     projects[index].items.push(itemToAdd);
     populateDivItem(projects, index, itemToAdd);
+    //createListItemsDiv(itemToAdd, index, projects[index]);
 }
 
 function submitItem(form, projects) {
@@ -60,8 +61,9 @@ function submitItem(form, projects) {
 
 function submitProject(form, projects) {
     const dataProject = getDataProjectForm(form);
-    projects.push(new Project(dataProject[0], dataProject[1], dataProject[2]));
-    addProject(dataProject[0], projects.length);
+    const newProject = new Project(dataProject[0], dataProject[1], dataProject[2]);
+    projects.push(newProject);
+    addProject(newProject, projects.length);
     form.reset();
 }
 

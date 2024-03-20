@@ -54,7 +54,7 @@ function populateProject(project, index) {
     todoItemsContainer.dataset.index = index;
 
     project.items.forEach((item, index) => {
-        todoItemsContainer.appendChild(createListItemsDiv(item, index, project));
+        createListItemsDiv(item, index, project);
     })
 }
 
@@ -62,7 +62,7 @@ function removeDivItem(divContainer) {
     divContainer.parentNode.removeChild(divContainer);
 }
 
-function createListItemsDiv(item, index, project) {
+export function createListItemsDiv(item, index, project) {
     const divContainer = document.createElement("div");
     divContainer.classList.add("todo-items");
     divContainer.dataset.index = index;
@@ -85,29 +85,32 @@ function createListItemsDiv(item, index, project) {
     divContainer.appendChild(divMoreInfo);
     divContainer.appendChild(divRemoveItem);
 
-    return divContainer;
+    const todoItemsContainer = document.querySelector(".todo-list");
+    todoItemsContainer.appendChild(divContainer);
 }
 
 export function populateDivItem(projects, index, item) {
     const todoItemsContainer = document.querySelector(".todo-list");
-    if (index === todoItemsContainer.dataset.index)
-        todoItemsContainer.appendChild(createListItemsDiv(item, index, projects[index]));
+    if (index === todoItemsContainer.dataset.index) {
+        createListItemsDiv(item, projects[index].length - 1, projects[index]);
+    }
 }
 
 function populateSideBar(projects, indexActive) {
-    addProject("All TODO items", 0);
+    // the div below will show all the available items within all the projects
+    setUpDiv("All TODO items", 0);
 
     projects.forEach((project, index) => {
-        addProject(project.title, index + 1);
+        addProject(project, index + 1);
     });
 
     setActiveContainer(indexActive);
 }
 
-export function addProject(projectTitle, index) {
+function setUpDiv(title, index) {
     const divContainer = document.querySelector(".project-item");
     const divProj = document.createElement("div");
-    divProj.textContent = projectTitle;
+    divProj.textContent = title;
     divProj.dataset.index = index;
     // We add +1 because the first item of the divContainer is the container
     // of all the items
@@ -115,11 +118,33 @@ export function addProject(projectTitle, index) {
     divContainer.appendChild(divProj);
 }
 
-function setActiveContainer(index) {
-    const allElements = document.querySelectorAll(".project-item div");
-    allElements[index].classList.add("active");
+export function addProject(project, index) {
+    setUpDiv(project.title, index);
+    const divProjContainer = document.querySelectorAll(".project-item div");
+    divProjContainer[index].addEventListener("click", () => {
+        clearListItems();
+        populateProject(project, index);
+        const updatedProjContainer = document.querySelectorAll(".project-item div");
+        updatedProjContainer.forEach((element) => {
+            console.log();
+            console.log(element);
+            element.classList.remove("active");
+        });
+        updatedProjContainer[index].classList.add("active");
+    })
 }
 
+function setActiveContainer(index) {
+    const allElementsSidebar = document.querySelectorAll(".project-item div");
+    allElementsSidebar[index].classList.add("active");
+}
+
+function clearListItems() {
+    const todoItemsContainer= document.querySelector(".todo-list");
+    while(todoItemsContainer.firstChild) {
+        todoItemsContainer.removeChild(todoItemsContainer.firstChild);
+    }
+}
 
 
 
