@@ -64,7 +64,7 @@ function removeDivItem(divContainer) {
     divContainer.parentNode.removeChild(divContainer);
 }
 
-export function createListItemsDiv(item, index, project) {
+function createListItemsDiv(item, index, project) {
     const divContainer = document.createElement("div");
     divContainer.classList.add("todo-items");
     divContainer.dataset.index = index;
@@ -92,7 +92,9 @@ export function createListItemsDiv(item, index, project) {
 }
 
 export function populateDivItem(projects, index, item) {
+    console.log(index);
     const todoItemsContainer = document.querySelector(".todo-list");
+    console.log(todoItemsContainer.dataset.index);
     if (index === todoItemsContainer.dataset.index) {
         createListItemsDiv(item, projects[index].length - 1, projects[index]);
     }
@@ -137,7 +139,7 @@ export function addProject(project, index) {
     const divProjContainer = document.querySelectorAll(".project-item div");
     divProjContainer[index].addEventListener("click", () => {
         clearListItems();
-        populateProject(project, index);
+        populateProject(project, index - 1);
         const updatedProjContainer = document.querySelectorAll(".project-item div");
         updatedProjContainer.forEach((element) => {
             element.classList.remove("active");
