@@ -5,6 +5,7 @@ export default function changeDOM(projects) {
 };
 
 const DEFAULT_PROJECT_INDEX = 0;
+const INITIAL_ACTIVE_PROJECT = 1;
 
 function firstLoadPage(projects) {
     const funcSelectionItemList = [addDivTodo, addDivProject];
@@ -40,7 +41,11 @@ function firstLoadPage(projects) {
         dialog.removeChild(modal);
     }
 
-    // The first time we enter the page we load the contents of the default project
+    // The first time we enter the page we load the sidebar with the default project
+    // We will also add another tab which is all 'todo items'
+    // The first time we load the web, we will load the default project whose index is 
+    // INITIAL_ACTIVE_PROJECT
+    populateSideBar(projects, INITIAL_ACTIVE_PROJECT);
     populateProject(projects[DEFAULT_PROJECT_INDEX], DEFAULT_PROJECT_INDEX);
 }
 
@@ -89,7 +94,31 @@ export function populateDivItem(projects, index, item) {
         todoItemsContainer.appendChild(createListItemsDiv(item, index, projects[index]));
 }
 
+function populateSideBar(projects, indexActive) {
+    addProject("All TODO items", 0);
 
+    projects.forEach((project, index) => {
+        addProject(project.title, index + 1);
+    });
+
+    setActiveContainer(indexActive);
+}
+
+export function addProject(projectTitle, index) {
+    const divContainer = document.querySelector(".project-item");
+    const divProj = document.createElement("div");
+    divProj.textContent = projectTitle;
+    divProj.dataset.index = index;
+    // We add +1 because the first item of the divContainer is the container
+    // of all the items
+    divProj.dataset.index = index;
+    divContainer.appendChild(divProj);
+}
+
+function setActiveContainer(index) {
+    const allElements = document.querySelectorAll(".project-item div");
+    allElements[index].classList.add("active");
+}
 
 
 
