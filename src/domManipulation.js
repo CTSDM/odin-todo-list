@@ -75,6 +75,7 @@ function createListItemsDiv(item, index, project, projects) {
     divDate.textContent = item.dueDate;
     const divMoreInfo = document.createElement("div");
     divMoreInfo.textContent = "click me for more details";
+    divMoreInfo.addEventListener("click",() => {showFullInfoItem(item, projects)});
     const divRemoveItem = document.createElement("div");
     divRemoveItem.classList.add("remove");
     divRemoveItem.textContent = "Remove item";
@@ -160,17 +161,185 @@ function clearListItems() {
     }
 }
 
+function showFullInfoItem(item) {
+    setUpDialog(dialogInfo);
+    clearDialogInfo(dialogInfo);
+    const divContainer = document.createElement("div");
+    divContainer.classList.add("show-info");
+    addModalValues(divContainer, item);
+    dialogInfo.appendChild(divContainer);
+    dialogInfo.showModal();
+}
 
+function setUpDialog(dialog) {
+    dialog.addEventListener("click", (e) => {
+        if (e.target === dialog) {
+            dialog.close();
+        }
+    })
+}
 
+function clearDialogInfo(dialogContainer) {
+    while (dialogContainer.firstChild) {
+        dialogContainer.removeChild(dialogContainer.firstChild);
+    }
+}
 
+function addModalValues(divContainer, item) {
+    setTitleOnModal(divContainer, item);
+    setDescriptionOnModal(divContainer, item);
+    setDueDateOnModal(divContainer, item);
+    if (item.urgency) setUrgencyOnModal(divContainer, item);
+    if (item.importance) setImportanceOnModal(divContainer, item); 
+}
 
+function setUrgencyOnModal(divContainer) {
+    const divUrgency = document.createElement("div");
+    divUrgency.textContent = "This project is urgent!"
+    divContainer.appendChild(divUrgency);
+}
 
+function setImportanceOnModal(divContainer) {
+    const divImportance = document.createElement("div");
+    divImportance.textContent= "This project is important!"
+    divContainer.appendChild(divImportance);
+}
+function setTitleOnModal (divContainer, item) {
+    const divTitle = document.createElement("div");
+    divTitle.textContent = `Title: ${item.title}`;
+    divContainer.appendChild(divTitle);
+}
 
+function setDescriptionOnModal(divContainer, item) {
+    const divDescription = document.createElement("div");
+    divDescription.textContent = `Description: ${item.description}`;
+    divContainer.appendChild(divDescription);
+}
 
+function setDueDateOnModal(divContainer, item) {
+    const divDueDate = document.createElement("div");
+    divDueDate.textContent = `Due Date: ${item.dueDate}`;
+    divContainer.appendChild(divDueDate);
+}
 
+function getDivTitle() {
+    const divTitle = document.createElement("div");
+    divTitle.classList.add("add-title");
+    const labelTitle = document.createElement("label");
+    labelTitle.htmlFor = "title";
+    labelTitle.textContent = "Title";
+    const inputTitle = document.createElement("input");
+    inputTitle.type = "text";
+    inputTitle.id = "title";
+    inputTitle.name = "title";
+    inputTitle.autofocus = true;
+    inputTitle.autocomplete = "off";
+    inputTitle.required = true;
 
+    divTitle.appendChild(labelTitle);
+    divTitle.appendChild(inputTitle);
 
+    return divTitle;
+}
 
+function getDivDescription() {
+    const divDescription = document.createElement("div");
+    divDescription.classList.add("add-description");
+    const labelDescription = document.createElement("label");
+    labelDescription.htmlFor = "description";
+    labelDescription.textContent = "Description";
+    const inputDescription= document.createElement("textarea");
+    inputDescription.id = "description";
+    inputDescription.name = "description";
+    inputDescription.rows = "20";
+    inputDescription.cols = "100";
+    inputDescription.required = true;
 
+    divDescription.appendChild(labelDescription);
+    divDescription.appendChild(inputDescription);
 
+    return divDescription;
+}
 
+function getDivDueDate() {
+    const divDueDate = document.createElement("div");
+    divDueDate.classList.add("due-date");
+    const labelDueDate= document.createElement("label");
+    labelDueDate.htmlFor = "due-date";
+    labelDueDate.textContent = "Due date";
+    const inputDueDate = document.createElement("input");
+    inputDueDate.type = "date";
+    inputDueDate.name = "due-date";
+    inputDueDate.id = "due-date";
+    inputDueDate.required = true;
+    
+    divDueDate.appendChild(labelDueDate);
+    divDueDate.appendChild(inputDueDate);
+
+    return divDueDate;
+}
+
+function getDivCheckbox(className, name, textLabel) {
+    const divT = document.createElement("div");
+    divT.classList.add(className);
+    const labelT = document.createElement("label");
+    labelT.textContent = textLabel;
+    const inputT = document.createElement("input");
+    inputT.type = "checkbox";
+    inputT.name = name;
+    inputT.id = name;
+
+    divT.appendChild(labelT);
+    divT.appendChild(inputT);
+
+    return divT;
+}
+
+function getDivDropdownProjects(projects) {
+    const divDropdown = document.createElement("div");
+    const labelDropdown = document.createElement("label");
+    labelDropdown.htmlFor = "project-list";
+    labelDropdown.textContent = "Choose a project:"
+    divDropdown.classList.add("project-list");
+    const selectDropdown = document.createElement("select");
+    selectDropdown.name = "project-list";
+    selectDropdown.id = "project-list";
+    
+    projects.forEach((project, index) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = index;
+        optionElement.textContent = project.title;
+        selectDropdown.appendChild(optionElement);
+    })
+
+    divDropdown.appendChild(selectDropdown);
+
+    return divDropdown;
+}
+
+function populateModalItem (form, projects) {
+    form.append(getDivDropdownProjects(projects));
+
+    // Adding title and description
+    form.appendChild(getDivTitle());
+    form.appendChild(getDivDescription());
+
+    // bottom container that includes due-date, urgency and importance
+    const divBottomContainer = document.createElement("div");
+    divBottomContainer.classList.add("bottom-container-todo");
+    // Adding due-date, urgency and importance
+    divBottomContainer.appendChild(getDivDueDate());
+    divBottomContainer.appendChild(getDivCheckbox("urgency", "urgency", "Urgent?"));
+    divBottomContainer.appendChild(getDivCheckbox("importance", "importance", "Important?"));
+    
+    // Adding bottom container to form
+    form.appendChild(divBottomContainer);    
+}
+
+function populateModalProject(form) {
+    form.appendChild(getDivTitle());
+    form.appendChild(getDivDescription());
+    form.appendChild(getDivCheckbox("importance", "importance", "Important?"));
+}
+
+export { populateModalItem, populateModalProject }

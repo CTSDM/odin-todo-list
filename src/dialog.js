@@ -2,12 +2,13 @@
 
 import Item from './items.js';
 import Project from './project.js';
-import {populateDivItem, addProject} from './domManipulation.js';
-import {saveProjects} from './storage.js';
+import { populateDivItem, addProject } from './domManipulation.js';
+import { populateModalItem, populateModalProject} from './domManipulation.js';
+import { saveProjects } from './storage.js';
 
 export {dialog, getDivTodoItem, getDivProject};
 
-const dialog = document.querySelector("dialog");
+const dialog = document.querySelector("#dialogNewElement");
 
 const TODO_TEXT = "TODO";
 const PROJECT_TEXT= "Project";
@@ -98,79 +99,6 @@ function getCloseSubmitButtons(form, selector, projects) {
     return divButtons;
 }
 
-function getDivTitle() {
-    const divTitle = document.createElement("div");
-    divTitle.classList.add("add-title");
-    const labelTitle = document.createElement("label");
-    labelTitle.htmlFor = "title";
-    labelTitle.textContent = "Title";
-    const inputTitle = document.createElement("input");
-    inputTitle.type = "text";
-    inputTitle.id = "title";
-    inputTitle.name = "title";
-    inputTitle.autofocus = true;
-    inputTitle.autocomplete = "off";
-    inputTitle.required = true;
-
-    divTitle.appendChild(labelTitle);
-    divTitle.appendChild(inputTitle);
-
-    return divTitle;
-}
-
-function getDivDescription() {
-    const divDescription = document.createElement("div");
-    divDescription.classList.add("add-description");
-    const labelDescription = document.createElement("label");
-    labelDescription.htmlFor = "description";
-    labelDescription.textContent = "Description";
-    const inputDescription= document.createElement("textarea");
-    inputDescription.id = "description";
-    inputDescription.name = "description";
-    inputDescription.rows = "20";
-    inputDescription.cols = "100";
-    inputDescription.required = true;
-
-    divDescription.appendChild(labelDescription);
-    divDescription.appendChild(inputDescription);
-
-    return divDescription;
-}
-
-function getDivDueDate() {
-    const divDueDate = document.createElement("div");
-    divDueDate.classList.add("due-date");
-    const labelDueDate= document.createElement("label");
-    labelDueDate.htmlFor = "due-date";
-    labelDueDate.textContent = "Due date";
-    const inputDueDate = document.createElement("input");
-    inputDueDate.type = "date";
-    inputDueDate.name = "due-date";
-    inputDueDate.id = "due-date";
-    inputDueDate.required = true;
-    
-    divDueDate.appendChild(labelDueDate);
-    divDueDate.appendChild(inputDueDate);
-
-    return divDueDate;
-}
-
-function getDivCheckbox(className, name, textLabel) {
-    const divT = document.createElement("div");
-    divT.classList.add(className);
-    const labelT = document.createElement("label");
-    labelT.textContent = textLabel;
-    const inputT = document.createElement("input");
-    inputT.type = "checkbox";
-    inputT.name = name;
-    inputT.id = name;
-
-    divT.appendChild(labelT);
-    divT.appendChild(inputT);
-
-    return divT;
-}
-
 function getForm(text) {
     const modal = document.createElement("div");
     modal.classList.add("modal");
@@ -184,51 +112,13 @@ function getForm(text) {
     return form;
 }
 
-function getDivDropdownProjects(projects) {
-    const divDropdown = document.createElement("div");
-    const labelDropdown = document.createElement("label");
-    labelDropdown.htmlFor = "project-list";
-    labelDropdown.textContent = "Choose a project:"
-    divDropdown.classList.add("project-list");
-    const selectDropdown = document.createElement("select");
-    selectDropdown.name = "project-list";
-    selectDropdown.id = "project-list";
-    
-    projects.forEach((project, index) => {
-        const optionElement = document.createElement("option");
-        optionElement.value = index;
-        optionElement.textContent = project.title;
-        selectDropdown.appendChild(optionElement);
-    })
-
-    divDropdown.appendChild(selectDropdown);
-
-    return divDropdown;
-}
-
 function getDivTodoItem(projects) {
     const selector = true;
     const form = getForm(TODO_TEXT);
 
     // Adding a dropdown selector to select a project
     // by default it will use the default project, position 0 of the array project
-    form.append(getDivDropdownProjects(projects));
-
-    // Adding title and description
-    form.appendChild(getDivTitle());
-    form.appendChild(getDivDescription());
-
-    // bottom container that includes due-date, urgency and importance
-    const divBottomContainer = document.createElement("div");
-    divBottomContainer.classList.add("bottom-container-todo");
-    // Adding due-date, urgency and importance
-    divBottomContainer.appendChild(getDivDueDate());
-    divBottomContainer.appendChild(getDivCheckbox("urgency", "urgency", "Urgent?"));
-    divBottomContainer.appendChild(getDivCheckbox("importance", "importance", "Important?"));
-    
-    // Adding bottom container to form
-    form.appendChild(divBottomContainer);
-
+    populateModalItem(form, projects);
     // Adding buttons
     form.appendChild(getCloseSubmitButtons(form, selector, projects));
 
@@ -236,20 +126,15 @@ function getDivTodoItem(projects) {
     return form.parentNode;
 }
 
+
 function getDivProject(projects) {
     const selector = false;
     const form = getForm(PROJECT_TEXT);
     
     // Adding title and description and importance
-    form.appendChild(getDivTitle());
-    form.appendChild(getDivDescription());
-    form.appendChild(getDivCheckbox("importance", "importance", "Important?"));
-
+    populateModalProject(form);
     // Adding buttons
     form.appendChild(getCloseSubmitButtons(form, selector, projects));
 
     return form.parentNode;
 }
-
-
-

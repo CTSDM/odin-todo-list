@@ -124,3 +124,10 @@ form {
 .active {
     background-color: red;
 }
+
+.show-info {
+    font-size: 30px;
+    min-height: 30vh;
+    width: 60vh;
+    padding: 5%;
+}

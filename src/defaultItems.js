@@ -9,6 +9,15 @@ function getDateString() {
     let mm = String(today.getMonth() + 1);
     let yy = String(today.getFullYear());
 
+    // adding leading zeros to the Date if needed
+    if (dd.length < 2) {
+        dd = '0' + dd;
+    }
+
+    if (mm.length < 2) {
+        mm = '0' + mm;
+    }
+
     return `${yy}-${mm}-${dd}`
 }
 
